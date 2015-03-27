@@ -21,7 +21,7 @@ fi
 #If a rmim logfile exists, back it up once.
 if [ -f ${LOG_DIR}/rmimDeletedFiles.log ]
 then
-    mv ${LOG_DIR}rmimDeletedFiles.log ${LOG_DIR}rmimDeletedFiles.previous.log
+    mv ${LOG_DIR}/rmimDeletedFiles.log ${LOG_DIR}/rmimDeletedFiles.previous.log
 fi
 
 #For each string specified as a script argument,
