@@ -1,5 +1,9 @@
 #!/bin/sh
 
+#This script is a fun way for me to delete a batch of files
+#based on a matched *string* in a given directory.
+#You are MUCH better off just using 'rm' wisely.
+
 #Modify the shell's delimiter for use in remove_files() subshell
 old_IFS="$IFS"
 IFS="
@@ -23,19 +27,20 @@ remove_files()
 
 #FIXME Place the -h if statement inside the Interactive if statement
 
-if [ $1 = "-h" ]
-then
-    echo "This script removes files for you."
-    echo "When run with no arguments, it will walk you through it's actions"
-    echo "Otherwise, the script will delete all files matching the second argument in the directory specified in the first."i
-    echo ""
-    echo "usage \"rmim -h\" : Display this help and exit"
-    echo "      \"rmim <directory> <matched string>\""
-    echo "       Deletes all files that match <string> in <directory>. Default directory is \".\""
-    echo "      \"rmim\" Run rmim interactively, with a helpful walkthrough"
 
 #Non-interactive Mode
-elif [ $1 ]
+if [ $1 ]
+    if [ $1 = "-h" ]
+    then
+        echo "This script removes files for you."
+        echo "When run with no arguments, it will walk you through it's actions"
+        echo "Otherwise, the script will delete all files matching the second argument in the directory specified in the first."i
+        echo ""
+        echo "usage \"rmim -h\" : Display this help and exit"
+        echo "      \"rmim <directory> <matched string>\""
+        echo "       Deletes all files that match <string> in <directory>. Default directory is \".\""
+        echo "      \"rmim\" Run rmim interactively, with a helpful walkthrough"
+    fi
 then
     echo "Script was called non-interactively"
     remove_files $1 $2
