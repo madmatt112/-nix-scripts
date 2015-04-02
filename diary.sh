@@ -45,14 +45,8 @@ function checkargs
 
     #If -p is included with any other argument, printerr.
     if [[ $PRINTDIARY ]]; then
-        if [[ $PRINTDAY ]]; then
+        if [[ $PRINTDAY ]] || [[ $PRINTDATE ]] || [[ $PRINTTIME ]]; then
             printerr "-p must be only argument if present"
-            exit 5
-        elif [[ $PRINTDATE ]]; then
-            printerr "-p must be only argument if present" 
-            exit 5
-        elif [[ $PRINTTIME ]]; then
-            printerr "-p must be only argument if present" 
             exit 5
         else
             echo "Here is your diary's contents:"
