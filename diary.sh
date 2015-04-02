@@ -4,7 +4,7 @@
 function printerr
 {
     echo "Error: $1" 1>&2
-    echo "Usage: 'diary.sh -p' OR"
+    echo "Usage: 'diary.sh <-p>' OR"
     echo "Usage: 'diary.sh  <-a> <-d> <-t>'"
 }
 
@@ -22,28 +22,36 @@ function checkargs
             exit 1
         fi
 
-        #If any argument is -p only, print diary.
-        if (( ${#arg} == 2 )); then
-            if [[ ${arg:1:1} == 'p' ]]; then
-            echo "Here is your diary:"
-            echo $FILE
-            fi
-        fi
-
         #Iterate through the letters after the -
-        #If p is included with any other args, printerr
         for (( i=1 ; i<${#arg} ; i++ ))  #go from 1 to the length of arg
         do
             case ${arg:$i:1} in
                 a) PRINTDAY=true;;
                 d) PRINTDATE=true;;
                 t) PRINTTIME=true;;
-                p) printerr "-p must be alone"
-                   exit 4;;
+                p) PRINTDIARY=true;;
                 *) printerr "unknown option: ${arg:$i:1}";
                    exit 2;;
             esac
         done
+
+    #If -p is included with any other argument, printerr.
+    if [[ $PRINTDIARY ]]; then
+        if [[ $PRINTDAY ]]; then
+            printerr "-p must be only argument if present"
+            exit 5
+        elif [[ $PRINTDATE ]]; then
+            printerr "-p must be only argument if present" 
+            exit 5
+        elif [[ $PRINTTIME ]]; then
+            printerr "-p must be only argument if present" 
+            exit 5
+        else
+            echo "Here is your diary's contents:"
+            cat $FILE
+            exit 0
+        fi
+    fi
     done
     return 0;
 }
