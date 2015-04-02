@@ -1,6 +1,13 @@
 #!/bin/bash
 
-#Print an error with usage messag
+#Authors: AJ Armstrong and Matthew Field
+#This script is a nifty little journaling script I wrote for class
+#It takes a few arguments to specify timestamping of entries
+#It reads lines of text entered by the user, and writes them to ./.journal
+#If called with (and only with) -p, it prints the journal file
+
+
+#Print an error with usage message
 function printerr
 {
     echo "Error: $1" 1>&2
@@ -8,15 +15,16 @@ function printerr
     echo "Usage: 'diary.sh  <-a> <-d> <-t>'"
 }
 
+#Parses arguments, taking actions as neccessary.
 function checkargs
 {
-    # Only accept arguments that begin with "-" 
+    # Only accept arguments that begin with '-'
     # Only flags valid are a, d, t
     #Check all arguments
 
     for arg in $@
     do
-        #Check that the first character is -
+        #Check that the first character is '-'
         if ! [[ ${arg:0:1} == "-" ]]; then
             printerr "Unknown argument: $arg"
             exit 1
