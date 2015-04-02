@@ -27,6 +27,7 @@ function checkargs
             if [[ ${arg:1:1} == 'p' ]]; then
             echo "Here is your diary:"
             echo $FILE
+            fi
         fi
 
         #Iterate through the letters after the -
@@ -37,7 +38,8 @@ function checkargs
                 a) PRINTDAY=true;;
                 d) PRINTDATE=true;;
                 t) PRINTTIME=true;;
-                p) printerr "-p must be alone";;
+                p) printerr "-p must be alone"
+                   exit 4;;
                 *) printerr "unknown option: ${arg:$i:1}";
                    exit 2;;
             esac
