@@ -1,0 +1,39 @@
+#!/bin/bash
+
+function printerr
+{
+    echo "Error: $1" 1>&2
+    echo "Usage: 'timesheet <-d[days]> <-h[hours]> <-m[minutes]> [Company Name]"
+}
+
+function checkargs
+{
+    # Acept only one argument
+    # Accept arguments that begin with '-'
+    # Only flags valid are a, d, t
+    # Check all arguments
+
+    COMPANY_COUNT=""
+    for arg in $@
+    do
+        if ! [[ ${arg:0:1} == "-" ]]; then
+            if [[ $COMPANY_COUNT == "" ]]; then
+                COMPANY_NAME = $arg
+                COMPANY_COUNT = 1
+            elif [[ $COMPANY_COUNT == 1 ]]; then
+                printerr "More than one company name given: $arg"
+                exit 1
+            fi
+
+        else #If the argument does begin with '-'
+            #Iterate through the letters after the '-'
+            case ${arg:$1:${#arg}} in
+                d) DAY="" ;;
+                h) HOUR="";;
+                m) MINUTE="";;
+                *) printerr "unknown option: ${arg:$i:1}";
+                   exit 2;;
+            esac
+        fi
+    done
+}
