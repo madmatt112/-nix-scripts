@@ -85,11 +85,6 @@ function writeheader
         exit 3
     fi
 
-    if ! [[ -e $1 ]]; then
-        printerr "Diary file does not exist"
-        exit 4
-    fi
-
     HEADER="" #Start with an empty one
     if [[ $PRINTDAY ]]; then HEADER="$(date +%a)"; fi
     if [[ $PRINTDATE ]]; then
