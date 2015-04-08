@@ -47,16 +47,25 @@ function processArgs
         #Iterate through the letters after the '-'
         elif [[ ${arg:0:1} == "-" ]]; then
         case ${arg:1:1} in
-            d) PRINTDAY=""
+            d)if [[ $DAY_VALUE ]]; then
+                printerr "Duplicate argument: -d"
+                exit 4
+              fi
               DAY_VALUE="${arg:2:${#arg}}"
               ;;
-            h) PRINTHOUR=""
+            h)if [[ $HOUR_VALUE ]]; then 
+                printerr "Duplicate argument: -h"
+                exit 4
+              fi
               HOUR_VALUE="${arg:2:${#arg}}"
               ;;
-            m) PRINTMINUTE=""
+            m)if [[ $MINUTE_VALUE ]]; then
+                printerr "Duplicate argument: -m"
+                exit 4
+              fi
               MINUTE_VALUE="${arg:2:${#arg}}"
               ;;
-            *) printerr "unknown option: ${arg:$i:1}";
+            *) printerr "unknown option: ${arg:1:1}";
                exit 2;;
         esac
         fi
