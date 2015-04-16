@@ -17,10 +17,10 @@ function checkfile
     then
         #File doesn't exist. Create it and set up
         touch "$1"
-        echo "=========================================================" >> $1
-        echo " Tiemsheet  of $(whoami). Created on $(date)." >> $1
-        echo "=========================================================" >> $1
-        echo
+#        echo "==============================================================" >> $1
+#        echo "== Timesheet  of $(whoami). Created on $(date). ==" >> $1
+#        echo "==============================================================" >> $1
+#        echo
     fi
 }
 
@@ -72,6 +72,64 @@ function processArgs
         esac
         fi
     done
+
+MINUTE_VALUE=$((${DAYS_IN_MINUTES:-0} + ${HOURS_IN_MINUTES:-0} + ${MINUTE_VALUE:-0}))
+
+}
+
+
+function writeLines {
+
+#This function actually writes the lines to a tempfile.
+
+touch $TEMP_FILE
+HEADER_LINE_COUNT=0
+COMPANY_BOOL=""
+while read line
+do
+    echo "Looping through a line" #DEBUG
+
+    #If the company name already exists, add the existing minutes
+    #to the minutes variable, and write the new line to tempfile
+
+    for word in $line
+    do
+        
+        if [[ $word =~ "$COMPANY_NAME"  ]]        
+        then
+            echo "Company found"
+            COMPANY_BOOL="true"
+        fi
+
+        if [[ $word =~ ^[0-9]+$ ]] 
+        then
+            echo "Number found on line"
+            if [[ $COMPANY_BOOL ]]
+            then
+                echo "Number found on line with company name"
+                MINUTE_VALUE=$(($MINUTE_VALUE + $word))
+                echo "\$MINUTE_VALUE modified"
+                echo "$COMPANY_NAME $MINUTE_VALUE minutes" >> $TEMP_FILE
+            fi
+        fi        
+
+        if ! [[ $COMPANY_BOOL ]]
+        then
+            echo "Company not found, writing line as is"
+            echo $line >> $TEMP_FILE
+            break
+        fi
+
+    done
+done < $TIMESHEET_FILE
+
+#If no existing line contains the entered company's name, create a new line
+if ! [[ $COMPANY_BOOL ]]
+then
+    echo "Company name not found in file, writing new line"
+    echo "$COMPANY_NAME $(($DAY_IN_MINUTES + $HOURS_IN_MINUTES + $MINUTE_VALUE)) minutes" >> $TEMP_FILE
+fi
+
 }
 
 #################
@@ -79,8 +137,12 @@ function processArgs
 #################
 
 TIMESHEET_FILE=".timesheet"
+TEMP_FILE="/tmp/timesheet_temp_file"
 
+if [[ -e $TEMP_FILE ]];then rm $TEMP_FILE; fi
 checkfile $TIMESHEET_FILE
 processArgs $@
+writeLines
 
-echo "$(date +"%a, %b %d, %Y"): $COMPANY_NAME $(($DAY_IN_MINUTES+$HOURS_IN_MINUTES+$MINUTE_VALUE)) minutes" >> .timesheet
+
+mv /tmp/timesheet_temp_file $TIMESHEET_FILE
