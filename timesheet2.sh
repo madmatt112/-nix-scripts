@@ -1,5 +1,18 @@
 #!/bin/bash
 
+###
+###  This script works similarly to v1, but it converts
+###  days and hours entered into minutes. It also only
+###  ever uses one entry per company, so look for that
+###  functionality in writeLines{}
+###
+###  Author: Matthew Field
+###  Licence: Free as in beer, Free as in speech.
+###  Disclaimer: Plagiarism is still a risk if used for
+###  purposes.
+
+
+
 function printerr
 {
     echo "Error: $1" 1>&2
@@ -73,6 +86,7 @@ function processArgs
         fi
     done
 
+#Convert hours and days to minutes
 MINUTE_VALUE=$((${DAYS_IN_MINUTES:-0} + ${HOURS_IN_MINUTES:-0} + ${MINUTE_VALUE:-0}))
 
 }
@@ -118,6 +132,7 @@ do
 done < $TIMESHEET_FILE
 
 #If no existing line contains the entered company's name, create a new line
+#for the company.
 if ! [[ $COMPANY_BOOL ]]
 then
     echo "$COMPANY_NAME $(($DAY_IN_MINUTES + $HOURS_IN_MINUTES + $MINUTE_VALUE)) minutes" >> $TEMP_FILE
@@ -137,5 +152,6 @@ checkfile $TIMESHEET_FILE
 processArgs $@
 writeLines
 
-
+# If all completes well, write out to permanent file and clean up
 mv /tmp/timesheet_temp_file $TIMESHEET_FILE
+rm /tmp/timeesheet_temp_file
