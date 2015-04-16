@@ -87,7 +87,6 @@ HEADER_LINE_COUNT=0
 COMPANY_BOOL=""
 while read line
 do
-    echo "Looping through a line" #DEBUG
 
     #If the company name already exists, add the existing minutes
     #to the minutes variable, and write the new line to tempfile
@@ -97,25 +96,20 @@ do
         
         if [[ $word =~ "$COMPANY_NAME"  ]]        
         then
-            echo "Company found"
             COMPANY_BOOL="true"
         fi
 
         if [[ $word =~ ^[0-9]+$ ]] 
         then
-            echo "Number found on line"
             if [[ $COMPANY_BOOL ]]
             then
-                echo "Number found on line with company name"
                 MINUTE_VALUE=$(($MINUTE_VALUE + $word))
-                echo "\$MINUTE_VALUE modified"
                 echo "$COMPANY_NAME $MINUTE_VALUE minutes" >> $TEMP_FILE
             fi
         fi        
 
         if ! [[ $COMPANY_BOOL ]]
         then
-            echo "Company not found, writing line as is"
             echo $line >> $TEMP_FILE
             break
         fi
@@ -126,7 +120,6 @@ done < $TIMESHEET_FILE
 #If no existing line contains the entered company's name, create a new line
 if ! [[ $COMPANY_BOOL ]]
 then
-    echo "Company name not found in file, writing new line"
     echo "$COMPANY_NAME $(($DAY_IN_MINUTES + $HOURS_IN_MINUTES + $MINUTE_VALUE)) minutes" >> $TEMP_FILE
 fi
 
