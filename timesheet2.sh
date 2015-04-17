@@ -144,7 +144,7 @@ fi
 ## MAIN SCRIPT ##
 #################
 
-TIMESHEET_FILE=".timesheet"
+TIMESHEET_FILE=".timesheet2"
 TEMP_FILE="/tmp/timesheet_temp_file"
 
 if [[ -e $TEMP_FILE ]];then rm $TEMP_FILE; fi
@@ -153,5 +153,5 @@ processArgs $@
 writeLines
 
 # If all completes well, write out to permanent file and clean up
-mv /tmp/timesheet_temp_file $TIMESHEET_FILE
-rm /tmp/timeesheet_temp_file
+cp $TEMP_FILE $TIMESHEET_FILE
+rm $TEMP_FILE
