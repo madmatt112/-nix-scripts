@@ -97,7 +97,6 @@ function writeLines {
 #This function actually writes the lines to a tempfile.
 
 touch $TEMP_FILE
-HEADER_LINE_COUNT=0
 COMPANY_BOOL=""
 while read line
 do
