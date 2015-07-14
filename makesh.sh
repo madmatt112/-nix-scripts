@@ -1,7 +1,8 @@
 #!/bin/bash
 #
-# Creates a file, sets execute permissions for owner, writes a skelton framework,
+# Creates a file, sets execute permissions for owner, writes a skeleton framework,
 # and opens the file in VIm.
+#
 # Modify the FILE variable to suit your filestructure.
 
 FILE=$HOME/nix-scripts/$1
