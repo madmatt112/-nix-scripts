@@ -1,7 +1,10 @@
 #!/bin/bash
-#Creates a shell file as per NETE2000 requirements.
+#
+# Creates a file, sets execute permissions for owner, writes a skelton framework,
+# and opens the file in VIm.
+# Modify the FILE variable to suit your filestructure.
 
-FILE=~/bin/$1
+FILE=$HOME/nix-scripts/$1
 
 if [ -f $FILE ]
   then
