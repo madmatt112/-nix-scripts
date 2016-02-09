@@ -38,7 +38,7 @@ function checkargs
                 d) PRINTDATE=true;;
                 t) PRINTTIME=true;;
                 p) PRINTDIARY=true;;
-                *) printerr "unknown option: ${arg:$i:1}";
+                *) printerr "unknown option, dumbass: ${arg:$i:1}";
                    exit 2;;
             esac
         done
